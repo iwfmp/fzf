@@ -1,0 +1,60 @@
+#!/bin/zsh
+
+# Show bundles to install
+function install () {
+  sudo apt-get install \
+  "$(dpkg -l |
+  awk '{print $2}' |
+  fzf)"
+}
+
+# Show bundles to remove
+function remove () {
+  sudo apt-get --purge remove \
+  "$(dpkg -l |
+  awk '{print $2}' |
+  fzf)"
+  }
+
+# Present all projects in tmuxinator
+function mux () {
+  tmuxinator start \
+  "$(find $HOME/.tmuxinator/ -maxdepth 1 -name \*.yml |
+  awk -F/ '{print $NF}' |
+  sed s:.yml::g |
+  fzf)" &&
+  clear
+}
+
+# fd - cd to selected directory
+function fd () {
+  local dir
+  dir=$(find ${1:-*} -path '*/\.*' -prune -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+# fkill - kill process
+function fkill () {
+  ps -ef | sed 1d | fzf -m | awk '{print $2}' | xargs kill -${1:-9}
+}
+
+# fbr - checkout git branch
+function fbr () {
+  local branches branch
+  branches=$(git branch) &&
+  branch=$(echo "$branches" | fzf +s +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //")
+}
+
+# fco - checkout git commit
+function fco () {
+  local commits commit
+  commits=$(git log --pretty=oneline --abbrev-commit --reverse) &&
+  commit=$(echo "$commits" | fzf +s +m -e) &&
+  git checkout $(echo "$commit" | sed "s/ .*//")
+}
+
+# fh - repeat history
+function fh () {
+  eval $(([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s | sed 's/ *[0-9]* *//')
+}

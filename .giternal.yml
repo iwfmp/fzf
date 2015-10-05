@@ -1,0 +1,12 @@
+fzf:
+  repo: https://github.com/junegunn/fzf.git
+  path: lib
+marks:
+  repo: https://github.com/uvaes/fzf-marks
+  path: lib
+extras:
+  repo: https://github.com/atweiden/fzf-extras
+  path: lib
+fs:
+  repo: https://github.com/D630/fzf-fs
+  path: lib
