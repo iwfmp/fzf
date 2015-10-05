@@ -1,1 +1,4 @@
-lib
+lib/fzf
+lib/marks
+lib/extras
+lib/fs
