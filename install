@@ -1,3 +1,4 @@
 #!/bin/bash
 
+echo "Install FZF Thingies"
 sh lib/fzf/install
